@@ -1,0 +1,5 @@
+{
+    "watch": ["routes", "controllers", "services", "middlewares", "index.js"],
+    "ext": "js,json"
+  }
+  
