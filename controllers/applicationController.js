@@ -134,6 +134,25 @@ const downloadResume = async (req, res, next) => {
     }
 };
 
+const getStatusCounts = async (req, res, next) => {
+    try {
+      const userEmail = req.user.email;
+      const applications = await dynamoService.getJobApplicationsByUser(userEmail);
+  
+      // Count by status
+      const counts = applications.reduce((acc, app) => {
+        const status = app.status || 'Unknown';
+        acc[status] = (acc[status] || 0) + 1;
+        return acc;
+      }, {});
+  
+      res.json({ counts });
+    } catch (error) {
+      next(error);
+    }
+  };
+  
+
 // --- Supporting Documents ---
 
 // Add supporting documents to an existing application
@@ -339,6 +358,7 @@ const deleteNote = async (req, res, next) => {
     }
 };
 
+
 module.exports = {
     createApplication,
     getUserApplications,
@@ -346,6 +366,7 @@ module.exports = {
     updateApplication,
     deleteApplication,
     downloadResume,
+    getStatusCounts,
 
     addSupportingDocuments,
     getSupportingDocuments,

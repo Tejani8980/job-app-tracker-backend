@@ -17,6 +17,7 @@ router.use(authenticateToken);
 router.post('/', upload.single('file'), applicationController.createApplication);
 router.get('/', applicationController.getUserApplications);
 router.get('/download', applicationController.downloadResume);
+router.get('/status-counts', applicationController.getStatusCounts);
 router.get('/:id', applicationController.getApplicationById);
 router.put('/:id', applicationController.updateApplication);
 router.delete('/:id', applicationController.deleteApplication);
