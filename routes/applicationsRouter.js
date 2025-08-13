@@ -13,24 +13,23 @@ router.get('/download/:filename', downloadFile);
 // Protect all routes with JWT middleware
 router.use(authenticateToken);
 
-// Create a new job application with file upload
+//  ---------- Job Applications ---------- 
 router.post('/', upload.single('file'), applicationController.createApplication);
-
-// Get all job applications for logged-in user
 router.get('/', applicationController.getUserApplications);
-
-// Download resume file
 router.get('/download', applicationController.downloadResume);
-
-// Get a specific application by ID (ensure user owns it)
 router.get('/:id', applicationController.getApplicationById);
-
-// Update an application by ID
 router.put('/:id', applicationController.updateApplication);
-
-// Delete an application by ID
 router.delete('/:id', applicationController.deleteApplication);
 
+// ---------- SUPPORTING DOCUMENTS ----------
+router.post('/:applicationId/documents', upload.array('files'), applicationController.addSupportingDocuments);
+router.get('/:applicationId/documents', applicationController.getSupportingDocuments);
+router.delete('/:applicationId/documents/:docId', applicationController.deleteSupportingDocument);
 
+// ---------- NOTES ----------
+router.post('/:applicationId/notes', applicationController.addNote);
+router.get('/:applicationId/notes', applicationController.getNotes);
+router.put('/:applicationId/notes/:noteId', applicationController.updateNote);
+router.delete('/:applicationId/notes/:noteId', applicationController.deleteNote);
 
 module.exports = router;
